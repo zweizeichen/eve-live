@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  .row-fluid
+    .span2
+      .btn#system-button(type='button', data-toggle='modal', data-target='#modal-system') Jita
+      #tree
+    .span10
+      table#main-table.table.table-bordered.table-striped(style='display: none;')
+        thead
+          tr
+            th Type
+            th.price Bid
+            th.price Ask
+            th.price Last Seen
+        tbody
+
+  #modal-system.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='modal-label', aria-hidden='true')
+    .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+        h3#modal-label Please Select The System
+    .modal-body
+      p#modal-system-process-info
+        img#modal-system-loader(src='/images/loading.gif', style='margin-right: 5px;')
+        span#modal-system-status Loading System List...
+      input#modal-system-typeahead.typeahead(type='text')
+    .modal-footer
+      button.btn(data-dismiss='modal', aria-hidden='true') Close
+      button#system-modal-save.btn.btn-primary.disabled Save

@@ -1,0 +1,7 @@
+td.price, th.price{
+	text-align: right;
+}
+
+.modal-body {
+	overflow: visible
+}

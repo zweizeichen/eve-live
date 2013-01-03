@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>author</key>
+	<string>zweizeichen &lt;info@zweizeichen.org&gt;</string>
+	<key>dependencies</key>
+	<dict>
+		<key>colors</key>
+		<string>0.6.x</string>
+		<key>express</key>
+		<string>3.x</string>
+		<key>socket.io</key>
+		<string>0.9.x</string>
+		<key>zmq</key>
+		<string>2.2.0</string>
+	</dict>
+	<key>description</key>
+	<string>a simple EMDR to websocket aggregator</string>
+	<key>license</key>
+	<string>BSD-new</string>
+	<key>name</key>
+	<string>eve-live</string>
+	<key>version</key>
+	<string>1.0.0</string>
+</dict>
+</plist>
