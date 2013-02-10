@@ -83,7 +83,8 @@ var server = app.listen(app.get('port'));
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 
-if (config.xhrFallback){
+// XHR fallback for hosts like Heroku
+if(config.xhrFallback) {
   io.set("transports", ["xhr-polling"]);
   io.set("polling duration", 10);
 }
@@ -129,7 +130,7 @@ for(var relay in config.relays) {
 
 // External storage functionality
 if(config.externalStorage) {
-  redis = require("redis").createClient(config.redis.port, config.redis.host);
+  redis = require("redis").createClient(config.redis.port, config.redis.host, {return_buffers: config.externalStorageCompression});
 
   redis.on("error", function(err) {
     console.log("Redis error: " + err);
@@ -159,16 +160,32 @@ function redisLoadDatabase() {
   console.log('OK!'.green);
   process.stdout.write('Loading database from Redis: ');
 
-  redis.get('eve-live-db', function(err, reply) {
-    if(reply === null) {
-      console.log('Key is missing!'.yellow);
-    } else {
-      prices = JSON.parse(reply);
-      console.log('OK!'.green);
-    }
+  // Decide which key to load depending on settings
+  if(config.externalStorageCompression) {
+    redis.get('eve-live-db-compressed', function(err, reply) {
+      if(reply === null) {
+        console.log('Key is missing!'.yellow);
+      } else {
+        zlib.inflate(reply, function(err, inflatedData){
+          prices = JSON.parse(inflatedData);
+          console.log('OK!'.green);
+        });
+      }
 
-    outBlocked = false;
-  });
+      outBlocked = false;
+    });
+  } else {
+    redis.get('eve-live-db', function(err, reply) {
+      if(reply === null) {
+        console.log('Key is missing!'.yellow);
+      } else {
+        prices = JSON.parse(reply);
+        console.log('OK!'.green);
+      }
+
+      outBlocked = false;
+    });
+  }
 }
 
 // Kick-off external storage initialization
@@ -349,9 +366,23 @@ if(config.externalStorage) {
     now = new Date(Date.now());
     process.stdout.write('\n[' + now.toLocaleTimeString() + '] Writing DB to Redis: ');
     outBlocked = true;
-    redis.set('eve-live-db', JSON.stringify(prices), function(err, reply) {
-      console.log('OK!'.green);
-      outBlocked = false;
-    });
+
+    // Compress DB depending of settings
+    if(config.externalStorageCompression) {
+      // Compress DB
+      zlib.deflate(JSON.stringify(prices), function(error, compressedData) {
+        // Write to Redis
+        redis.set('eve-live-db-compressed', compressedData, function(err, reply) {
+          console.log('OK!'.green);
+          outBlocked = false;
+        });
+      });
+    } else {
+      // Write to Redis
+      redis.set('eve-live-db', JSON.stringify(prices), function(err, reply) {
+        console.log('OK!'.green);
+        outBlocked = false;
+      });
+    }
   }, config.externalStorageInterval);
 }

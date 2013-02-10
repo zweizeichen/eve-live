@@ -18,6 +18,12 @@ config.xhrFallback = false;
 // Periodically store DB to redis
 config.externalStorage = false;
 
+// Compress redis database to save some space at the cost of CPU time
+// Key names
+// Compression Disabled: eve-live-db
+// Compression Enabled: eve-live-db-compressed
+config.externalStorageCompression = true;
+
 // Interval in which data is backed-up in milliseconds
 config.externalStorageInterval = 300000;
 
