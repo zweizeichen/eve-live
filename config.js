@@ -9,6 +9,12 @@ config.relays = ['tcp://relay-us-west-1.eve-emdr.com:8050', 'tcp://relay-us-east
 // Display live status
 config.displayStatus = true;
 
+// Logging level of the express logger
+config.expressLoggingLevel = 'default';
+
+// Use XHR polling fallback for hosts like Heroku which do not natively support WebSockets
+config.xhrFallback = false;
+
 // Periodically store DB to redis
 config.externalStorage = false;
 

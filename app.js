@@ -38,7 +38,7 @@ app.configure(function() {
   app.set('view engine', 'jade');
   app.use(express.compress());
   app.use(express.favicon());
-  app.use(express.logger('dev'));
+  app.use(express.logger(config.expressLoggingLevel));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -82,6 +82,11 @@ app.get('/snapshot/:system/:type/', function(req, res) {
 var server = app.listen(app.get('port'));
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
+
+if (config.xhrFallback){
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+}
 
 io.sockets.on('connection', function(socket) {
 
