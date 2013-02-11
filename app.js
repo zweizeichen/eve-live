@@ -66,9 +66,17 @@ app.get('/snapshot/:system/', function(req, res) {
 // Return market snapshot of that type in this system
 app.get('/snapshot/:system/:type/', function(req, res) {
 
-  var response = JSON.stringify(prices[req.params.system][req.params.type]);
+  var resopnse = "";
+
+  // Error handling
+  try {
+    response = JSON.stringify(prices[req.params.system][req.params.type]);
+  } catch (err) {
+    response = '{error: "No data for that system. Is the systemID correct?"}';
+  }
+
   if(response === undefined) {
-    response = '{error: "No data for that type in this system. Are the IDs correct?"}';
+    response = '{error: "No data for that type in this system. Is the typeID correct?"}';
   }
 
   res.write(response);
