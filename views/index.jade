@@ -5,7 +5,12 @@ block content
   p Welcome to #{title}
   .row-fluid
     .span2
-      .btn#system-button(type='button', data-toggle='modal', data-target='#modal-system') Jita
+      h5 Selected System
+      .btn-group
+        button#update-dot.btn.disabled •
+        button.btn#system-button(type='button', data-toggle='modal', data-target='#modal-system') Jita
+      hr
+      h5 Market Groups
       #tree
     .span10
       table#main-table.table.table-bordered.table-striped(style='display: none;')

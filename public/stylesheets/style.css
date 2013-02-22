@@ -5,3 +5,7 @@ td.price, th.price{
 .modal-body {
 	overflow: visible
 }
+
+#update-dot {
+	font-size: 28px;
+}

@@ -60,6 +60,17 @@ socket.on('update', function(data) {
 	for(var type in data) {
 		localPrices[type] = data[type];
 
+		// Pulse activity indicator
+		if($('#update-dot').attr('style') === undefined){
+			$('#update-dot').pulse({
+			'color': 'green'
+			}, {
+				duration: 500
+			}, function() {
+				$('#update-dot').removeAttr("style");
+			});
+		}
+
 		// Update table if type is on watchlist
 		if(watching.indexOf(parseInt(type, 10)) != -1) {
 
