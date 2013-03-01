@@ -28,7 +28,7 @@ function updatePrice(element, type, price) {
 	var oldPrice = parseFloat(element.attr('data-isk'));
 
 	// Pulse values on change
-	if(oldPrice > price) {
+	if(oldPrice > price && element.attr('style') === undefined) {
 		// If new value is smaller, pulse red, remove style left over from the pulse afterwards
 		element.text(String(price).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
 		element.attr('data-isk', price);
@@ -39,7 +39,9 @@ function updatePrice(element, type, price) {
 		}, function() {
 			element.removeAttr("style");
 		});
-	} else if(oldPrice < price) {
+	}
+
+	if(oldPrice < price && element.attr('style') === undefined) {
 		// If new value is higher, pulse green, remove style left over from the pulse afterwards
 		element.text(String(price).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
 		element.attr('data-isk', price);
@@ -50,8 +52,6 @@ function updatePrice(element, type, price) {
 		}, function() {
 			element.removeAttr("style");
 		});
-	} else {
-		// If it's just the same number don't do anything
 	}
 }
 
