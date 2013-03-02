@@ -307,13 +307,15 @@ zmqSocket.on('message', function(message) {
             if(isBid === true) {
 
               if(price > bid || bid === 0) {
-                prices[solarSystemID][typeID].bid = price;
+                prices[solarSystemID][typeID].bid = price.toFixed(2);
               }
 
-            } else if(isBid === false) {
+            }
+
+            if(isBid === false) {
 
               if(price < ask || ask === 0) {
-                prices[solarSystemID][typeID].ask = price;
+                prices[solarSystemID][typeID].ask = price.toFixed(2);
               }
 
             }

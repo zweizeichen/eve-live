@@ -35,7 +35,7 @@ function updatePrice(element, type, price) {
 		element.pulse({
 			'background-color': '#f2dede'
 		}, {
-			duration: 400
+			duration: 200
 		}, function() {
 			element.removeAttr("style");
 		});
@@ -48,7 +48,7 @@ function updatePrice(element, type, price) {
 		element.pulse({
 			'background-color': '#dff0d8'
 		}, {
-			duration: 400
+			duration: 200
 		}, function() {
 			element.removeAttr("style");
 		});
@@ -65,7 +65,7 @@ socket.on('update', function(data) {
 			$('#update-dot').pulse({
 			'color': 'green'
 			}, {
-				duration: 500
+				duration: 200
 			}, function() {
 				$('#update-dot').removeAttr("style");
 			});
@@ -127,7 +127,7 @@ $.getJSON('/javascripts/groups.json', function(groups) {
 						// Append new types to table
 						if(localPrices[typeID] !== undefined) {
 							dateISO = new Date(localPrices[typeID].generatedAt).toISOString();
-							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a><td id="bid-' + typeID + '" class="price" data-isk="' + localPrices[typeID].ask + '">' + String(localPrices[typeID].bid).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td id="ask-' + typeID + '" class="price" data-isk="' + localPrices[typeID].ask + '">' + String(localPrices[typeID].ask).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td></tr>');
+							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a><td id="bid-' + typeID + '" class="price" data-isk="' + localPrices[typeID].bid + '">' + String(localPrices[typeID].bid).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td id="ask-' + typeID + '" class="price" data-isk="' + localPrices[typeID].ask + '">' + String(localPrices[typeID].ask).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td></tr>');
 
 							// Init timeago
 							$('#time-' + typeID).timeago();
