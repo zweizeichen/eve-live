@@ -4,6 +4,11 @@
   "author": "zweizeichen <info@zweizeichen.org>",
   "description": "a simple EMDR to websocket aggregator",
   "private": true,
+  "repository" :
+  {
+    "type" : "git",
+    "url" : "https://github.com/zweizeichen/eve-live.git"
+  },
   "scripts": {
     "start": "node app"
   },
