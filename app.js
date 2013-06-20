@@ -269,7 +269,9 @@ zmqSocket.on('message', function(message) {
             prices[solarSystemID][typeID].bid = bid;
             prices[solarSystemID][typeID].generatedAt = oldDate;
 
-          } else if(!prices[solarSystemID][typeID]) {
+          }
+
+          if(!prices[solarSystemID][typeID]) {
             prices[solarSystemID][typeID] = {};
             prices[solarSystemID][typeID].ask = ask;
             prices[solarSystemID][typeID].bid = bid;
@@ -283,8 +285,6 @@ zmqSocket.on('message', function(message) {
           // Check if there's new data
           // On first run reset prices
           if(oldDate < generatedAt) {
-            bid = 0;
-            ask = 0;
             dataUpdated++;
 
             // Determine if we have to update the values
@@ -298,6 +298,12 @@ zmqSocket.on('message', function(message) {
                 ask: oldAsk
               };
             }
+
+            // Reset prices
+            prices[solarSystemID][typeID].bid = 0;
+            prices[solarSystemID][typeID].ask = 0;
+            bid = 0;
+            ask = 0;
           }
 
           // Update accordingly
