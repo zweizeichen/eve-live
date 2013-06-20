@@ -1,14 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
   .row-fluid
     .span2
       h5 Selected System
       .btn-group
         button#update-dot.btn.disabled •
         button.btn#system-button(type='button', data-toggle='modal', data-target='#modal-system') Jita
+        a#api-system(href='/snapshot/30000142/', target='_blank').btn API
+      hr
+      h5 Last Updated
+      #last-updated No Updates Yet
       hr
       h5 Market Groups
       #tree
@@ -20,6 +22,7 @@ block content
             th.price Bid
             th.price Ask
             th.price Last Seen
+            th.price(width='60px') Links
         tbody
 
   #modal-system.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='modal-label', aria-hidden='true')

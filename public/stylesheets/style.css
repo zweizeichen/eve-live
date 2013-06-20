@@ -9,3 +9,7 @@ td.price, th.price{
 #update-dot {
 	font-size: 28px;
 }
+
+#last-updated {
+	white-space: nowrap;
+}

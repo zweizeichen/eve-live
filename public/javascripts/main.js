@@ -1,5 +1,6 @@
 var socket = io.connect(window.location.hostname);
 var room = '30000142-realtime';
+var currentSystem = 30000142;
 
 // Local representation of the prices database and other variables
 var localPrices = {};
@@ -69,6 +70,8 @@ socket.on('update', function(data) {
 			}, function() {
 				$('#update-dot').removeAttr("style");
 			});
+
+      $('#last-updated').text(localNames[type]);
 		}
 
 		// Update table if type is on watchlist
@@ -121,13 +124,13 @@ $.getJSON('/javascripts/groups.json', function(groups) {
 						// Append new types to table
 						if(localPrices[typeID] !== undefined) {
 							dateISO = new Date(localPrices[typeID].generatedAt).toISOString();
-							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a><td id="bid-' + typeID + '" class="price" data-isk="' + localPrices[typeID].bid + '">' + String(localPrices[typeID].bid).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td id="ask-' + typeID + '" class="price" data-isk="' + localPrices[typeID].ask + '">' + String(localPrices[typeID].ask).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td></tr>');
+							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a><td id="bid-' + typeID + '" class="price" data-isk="' + localPrices[typeID].bid + '">' + String(localPrices[typeID].bid).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td id="ask-' + typeID + '" class="price" data-isk="' + localPrices[typeID].ask + '">' + String(localPrices[typeID].ask).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td><td class="price"><a href="snapshot/' + currentSystem + '/' + typeID + '/" target="_blank"><i class="icon-camera" style="margin-top: 2px;"></i></a><a href="//element-43.com/market/' + typeID + '/" target="_blank" style="margin-left: 5px;"><img src="images/e43.png"></a><a href="//www.eve-central.com/home/quicklook.html?typeid=' + typeID + '" target="_blank" style="margin-left: 5px;"><img src="images/ec.png"></a></td></tr>');
 
 							// Init timeago
 							$('#time-' + typeID).timeago();
 						} else {
 							dateISO = new Date(Date.now()).toISOString();
-							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a><td id="bid-' + typeID + '" class="price" data-isk="0">No Data</td><td id="ask-' + typeID + '" class="price" data-isk="0">No Data</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td></tr>');
+							$('#main-table > tbody:last').append('<tr><td><img src="//image.eveonline.com/Type/' + typeID + '_32.png" style="margin-right: 5px;"><a href="//element-43.com/market/' + typeID + '/" target="_blank">' + localNames[typeID] + '</a></td><td id="bid-' + typeID + '" class="price" data-isk="0">No Data</td><td id="ask-' + typeID + '" class="price" data-isk="0">No Data</td><td class="price"><time id="time-' + typeID + '" class="timeago" datetime="' + dateISO + '"></time></td><td class="price"><a href="//element-43.com/market/' + typeID + '/" target="_blank"><img src="images/e43.png"></a><a href="//www.eve-central.com/home/quicklook.html?typeid=' + typeID + '" target="_blank" style="margin-left: 5px;"><img src="images/ec.png"></a></td></tr>');
 
 							// Init timeago
 							$('#time-' + typeID).timeago();
@@ -242,7 +245,10 @@ $(document).ready(function() {
 			room: room
 		});
 
+    currentSystem = systemID;
+
 		$('#modal-system-status').text('Loading new price database for ' + localSystems[systemID] + '...');
 		$('#system-button').text(localSystems[systemID]);
+    $('#api-system').attr('href', '/snapshot/' + systemID + '/');
 	}
 });
