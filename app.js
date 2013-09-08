@@ -66,7 +66,7 @@ app.get('/snapshot/:system/', function(req, res) {
 // Return market snapshot of that type in this system
 app.get('/snapshot/:system/:type/', function(req, res) {
 
-  var resopnse = "";
+  var response = "";
 
   // Error handling
   try {
