@@ -28,20 +28,20 @@ Syntax:  `/snapshot/[solarSystemID]/[typeID]/`
 Description: This will return a JSON document containing pricing information of that type in the selected system. `generatedAt` specifies the time the price was last seen.  
 Example: 
 `/snapshot/30000142/34/`
-
-    {
-      "ask":5.99,
-      "bid":6,
-      "generatedAt":1357220569000
-    }
-
+```javascript
+{
+  "ask":5.99,
+  "bid":6,
+  "generatedAt":1357220569000
+}
+```
 
 ### System Snapshot
 Syntax:  `/snapshot/[solarSystemID]/`  
 Description: This will return a JSON document containing all types and their prices in the selected system. `generatedAt` specifies the time the price was last seen.  
 Example: 
 `/snapshot/30000142/`
-
+```javascript
     {
       [...]
       "34": {
@@ -66,7 +66,7 @@ Example:
       },
       [...]
     }
-
+```
 ## Using Socket.io to Receive real-time Data from EVELive
 EVELive allows clients using Socket.io to subscribe to different rooms representing all the solar systems of EVE Online. Each system has two rooms:  
 
@@ -74,43 +74,43 @@ EVELive allows clients using Socket.io to subscribe to different rooms represent
 * `[solarSystemID]-realtime`
 
 Once the client connects to a room it receives the `init`event with the current system snapshot. If the client subscribed to the first room, it will only receive `update` events if the actual prices got updated. If the client connected to the `[solarSystemID]-realtime` room, it will receive updates whenever `generatedAt` gets updated even if the prices did not change at all. The data structure obtained from the `update` event is similar to the structure of the type snapshot:
-
-    {
-      "34": {
-        "ask": 5.99,
-        "bid": 6,
-        "generatedAt": 1357220569000
-      }
-    }
-
+```javascript
+{
+  "34": {
+    "ask": 5.99,
+    "bid": 6,
+    "generatedAt": 1357220569000
+  }
+}
+```
 
 Client example:  
+```javascript
+// Sockets
+var socket = io.connect(window.location.hostname);
+var room = '30000142-realtime';
 
-    // Sockets
-    var socket = io.connect(window.location.hostname);
-    var room = '30000142-realtime';
-    
-    // Local representation of the prices database and other variables
-    var localPrices = {};
-    var localNames = {};
-    
-    // Subscribe to Jita realtime feed
-    socket.emit('subscribe', {
-      room: room
-    });
-    
-    // Load initial database
-    socket.on('init', function(data) {
-    	localPrices = data;
-    });
-    
-    // On update update local DB
-    socket.on('update', function(data) {
-    	// Update local DB
-    	for(var type in data) {
-    		localPrices[type] = data[type];
-    		console.log('Updated type ' + type + '.');
-    	}
-    });
+// Local representation of the prices database and other variables
+var localPrices = {};
+var localNames = {};
 
+// Subscribe to Jita realtime feed
+socket.emit('subscribe', {
+  room: room
+});
+
+// Load initial database
+socket.on('init', function(data) {
+	localPrices = data;
+});
+
+// On update update local DB
+socket.on('update', function(data) {
+	// Update local DB
+	for(var type in data) {
+		localPrices[type] = data[type];
+		console.log('Updated type ' + type + '.');
+	}
+});
+```
 Another example can be found in `/public/javascripts/main.js`
